@@ -1,0 +1,7 @@
+# Gradle
+smart-mirror.yml
+.gradle
+build
+
+*.iml
+.idea/

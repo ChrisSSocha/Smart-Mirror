@@ -1,0 +1,23 @@
+server:
+  rootPath: /application/*
+  applicationConnectors:
+    - type: http
+      port: 9098
+  adminConnectors:
+    - type: http
+      port: 9099
+
+tflConfiguration:
+  endpoint: https://api.tfl.gov.uk/Line/Mode/
+  app_id: <APP ID HERE>
+  app_key: <APP KEY HERE>
+
+googleClientSecrets:
+  client_id: <CLIENT ID HERE>
+  auth_uri: "https://accounts.google.com/o/oauth2/auth"
+  token_uri: "https://accounts.google.com/o/oauth2/token"
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+  client_secret: <CLIENT SECRETS HERE>
+  redirect_uris:
+    - "urn:ietf:wg:oauth:2.0:oob"
+    - "http://localhost"
