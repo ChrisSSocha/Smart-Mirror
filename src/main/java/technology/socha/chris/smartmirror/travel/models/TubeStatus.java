@@ -10,10 +10,13 @@ public class TubeStatus {
     private int severity;
     @JsonProperty("statusSeverityDescription")
     private String description;
+    @JsonProperty("reason")
+    private String message;
 
-    public TubeStatus(int severity, String description) {
+    public TubeStatus(int severity, String description, String message) {
         this.severity = severity;
         this.description = description;
+        this.message = message;
     }
 
     @SuppressWarnings("unused")
@@ -27,5 +30,9 @@ public class TubeStatus {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

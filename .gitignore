@@ -1,3 +1,5 @@
+/.sass-cache
+/src/main/resources/assets/js/vendor
 # Gradle
 smart-mirror.yml
 .gradle
