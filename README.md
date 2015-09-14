@@ -1,5 +1,7 @@
 # Smart Mirror
 
+[![Build Status](https://snap-ci.com/ChrisSSocha/Smart-Mirror/branch/master/build_image)](https://snap-ci.com/ChrisSSocha/Smart-Mirror/branch/master)
+
 ## Installation
 
 You will need:
