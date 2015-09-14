@@ -11,6 +11,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.CalendarScopes;
+import technology.socha.chris.smartmirror.calendar.models.Calendar;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 
-public class CalendarService {
+public class GoogleCalendarService {
 
     private final String applicationName;
     private final GoogleClientSecrets clientSecrets;
@@ -28,7 +29,7 @@ public class CalendarService {
 
     private static final List<String> CALENDAR_SCOPE = Arrays.asList(CalendarScopes.CALENDAR_READONLY);
 
-    public CalendarService(String applicationName, File credentialsDirectory, GoogleClientSecrets clientSecrets) {
+    public GoogleCalendarService(String applicationName, File credentialsDirectory, GoogleClientSecrets clientSecrets) {
         this.applicationName = applicationName;
         this.clientSecrets = clientSecrets;
 
@@ -53,13 +54,15 @@ public class CalendarService {
         return credential;
     }
 
-    public com.google.api.services.calendar.Calendar getCalendar() throws IOException {
+    public Calendar getCalendar() throws IOException {
         Credential credential = authorize();
 
-        return new com.google.api.services.calendar.Calendar.Builder(
+        com.google.api.services.calendar.Calendar calendar = new com.google.api.services.calendar.Calendar.Builder(
                 httpTransport, jsonFactory, credential)
                 .setApplicationName(applicationName)
                 .build();
+
+        return new Calendar(calendar);
     }
 
 }
