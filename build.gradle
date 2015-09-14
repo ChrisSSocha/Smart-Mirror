@@ -33,12 +33,26 @@ configurations {
     runtime.exclude group: 'org.mortbay.jetty', module: 'servlet-api'
 }
 
+configurations.all {
+    resolutionStrategy {
+        //failOnVersionConflict()
+        force 'org.apache.httpcomponents:httpclient:4.5'
+    }
+}
+
 dependencies {
     compile 'io.dropwizard:dropwizard-core:0.8.4'
     compile 'io.dropwizard:dropwizard-assets:0.8.4'
     compile 'com.google.api-client:google-api-client:1.20.0'
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.20.0'
-    compile 'com.google.apis:google-api-services-calendar:v3-rev125-1.20.0'
+    compile 'com.google.apis:google-api-services-calendar:v3-rev140-1.20.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.github.tomakehurst:wiremock:1.57'
+    testCompile 'commons-io:commons-io:2.4'
+    testCompile 'org.assertj:assertj-core:3.1.0'
+    testCompile 'io.dropwizard:dropwizard-testing:0.8.4'
+    testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 run {

@@ -11,7 +11,7 @@ import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.CalendarService;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
 import technology.socha.chris.smartmirror.travel.resources.TravelResource;
-import technology.socha.chris.smartmirror.travel.services.TflStatusService;
+import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
 
 import java.io.File;
 
@@ -44,7 +44,7 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
         JerseyWebTarget target = client.target(tflConfiguration.getEndpoint());
         String appId = tflConfiguration.getAppId();
         String appKey = tflConfiguration.getAppKey();
-        TravelResource travelResource = new TravelResource(new TflStatusService(target, appId, appKey));
+        TravelResource travelResource = new TravelResource(new TflGateway(target, appId, appKey));
         environment.jersey().register(travelResource);
     }
 

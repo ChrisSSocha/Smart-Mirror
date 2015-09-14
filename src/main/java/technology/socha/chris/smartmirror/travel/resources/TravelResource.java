@@ -1,7 +1,7 @@
 package technology.socha.chris.smartmirror.travel.resources;
 
 import technology.socha.chris.smartmirror.travel.models.TubeLine;
-import technology.socha.chris.smartmirror.travel.services.TflStatusService;
+import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,9 +13,9 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class TravelResource {
 
-    private final TflStatusService statusService;
+    private final TflGateway statusService;
 
-    public TravelResource(TflStatusService statusService){
+    public TravelResource(TflGateway statusService){
         this.statusService = statusService;
     }
 
