@@ -9,7 +9,7 @@ import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.JerseyWebTarget;
 import technology.socha.chris.smartmirror.calendar.handlers.EventsHandler;
 import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
-import technology.socha.chris.smartmirror.calendar.services.CalendarService;
+import technology.socha.chris.smartmirror.calendar.services.GoogleCalendarService;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
 import technology.socha.chris.smartmirror.travel.resources.TravelResource;
 import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
@@ -37,7 +37,7 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
         JerseyClient client = JerseyClientBuilder.createClient();
 
         File credentialsDir = new File(System.getProperty("user.home"), ".credentials/smart-mirror");
-        CalendarService calendarService = new CalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
+        GoogleCalendarService calendarService = new GoogleCalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
         EventsHandler eventsHandler = new EventsHandler(calendarService);
         CalendarResource calendarResource = new CalendarResource(eventsHandler);
         environment.jersey().register(calendarResource);

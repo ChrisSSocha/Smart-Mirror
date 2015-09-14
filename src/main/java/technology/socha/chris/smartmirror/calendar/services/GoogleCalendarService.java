@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 
-public class GoogleCalendarService {
+public class GoogleCalendarService implements CalendarService {
 
     private final String applicationName;
     private final GoogleClientSecrets clientSecrets;
