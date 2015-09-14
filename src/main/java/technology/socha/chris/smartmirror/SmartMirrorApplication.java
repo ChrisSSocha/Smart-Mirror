@@ -7,6 +7,7 @@ import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.client.JerseyClient;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.JerseyWebTarget;
+import technology.socha.chris.smartmirror.calendar.handlers.EventsHandler;
 import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.CalendarService;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
@@ -37,7 +38,8 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
 
         File credentialsDir = new File(System.getProperty("user.home"), ".credentials/smart-mirror");
         CalendarService calendarService = new CalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
-        CalendarResource calendarResource = new CalendarResource(calendarService);
+        EventsHandler eventsHandler = new EventsHandler(calendarService);
+        CalendarResource calendarResource = new CalendarResource(eventsHandler);
         environment.jersey().register(calendarResource);
 
         TflConfiguration tflConfiguration = configuration.getTflConfiguration();
