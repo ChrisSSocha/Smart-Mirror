@@ -1,28 +1,32 @@
 package technology.socha.chris.smartmirror.calendar.resources;
 
-import technology.socha.chris.smartmirror.calendar.handlers.EventsHandler;
 import technology.socha.chris.smartmirror.calendar.models.CalendarEvent;
+import technology.socha.chris.smartmirror.calendar.models.Query;
+import technology.socha.chris.smartmirror.calendar.services.CalendarService;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.List;
 
 @Path("/calendar")
 @Produces(MediaType.APPLICATION_JSON)
 public class CalendarResource {
 
-    private final EventsHandler eventsHandler;
+    private final CalendarService calendarService;
 
-    public CalendarResource(EventsHandler eventsHandler){
-        this.eventsHandler = eventsHandler;
+    public CalendarResource(CalendarService calendarService){
+        this.calendarService = calendarService;
     }
 
     @GET
     @Path("/events")
-    public List<CalendarEvent> getEvents() {
-        return eventsHandler.handle();
+    public List<CalendarEvent> getEvents(@BeanParam Query query) {
+        try {
+            return calendarService.getCalendar().getEvents(query);
+        } catch (IOException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
 }

@@ -1,34 +1,46 @@
 package technology.socha.chris.smartmirror.calendar.models;
 
+import io.dropwizard.java8.jersey.params.LocalDateTimeParam;
+
+import javax.ws.rs.QueryParam;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Query {
 
-    private final int max;
-    private final LocalDateTime start;
-    private final LocalDateTime end;
-    private final String orderBy;
+    @QueryParam("max")
+    private Integer max;
+    @QueryParam("start")
+    private LocalDateTimeParam start;
+    @QueryParam("end")
+    private LocalDateTimeParam end;
+    @QueryParam("orderBy")
+    private String orderBy;
 
-    public Query(int max, LocalDateTime start, LocalDateTime end, String orderBy){
-        this.max = max;
-        this.start = start;
-        this.end = end;
-        this.orderBy = orderBy;
+    @SuppressWarnings("unused")
+    public Query(){
+        /* For Jackson */
     }
 
+
+
     public int getMax() {
-        return max;
+        int defaultValue = 10;
+        return max != null ? max : defaultValue;
     }
 
     public LocalDateTime getStart() {
-        return start;
+        LocalDateTime defaultValue = LocalDate.now().atStartOfDay();
+        return start != null ? start.get() : defaultValue;
     }
 
     public LocalDateTime getEnd() {
-        return end;
+        LocalDateTime defaultValue = LocalDate.now().atStartOfDay().plusDays(2);
+        return end != null ? end.get() : defaultValue;
     }
 
     public String getOrderBy() {
-        return orderBy;
+        String defaultValue = "startTime";
+        return orderBy != null ? orderBy : defaultValue;
     }
 }

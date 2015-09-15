@@ -1,18 +1,19 @@
 package technology.socha.chris.smartmirror;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.java8.Java8Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.client.JerseyClient;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.JerseyWebTarget;
-import technology.socha.chris.smartmirror.calendar.handlers.EventsHandler;
 import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.GoogleCalendarService;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
-import technology.socha.chris.smartmirror.travel.resources.TravelResource;
 import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
+import technology.socha.chris.smartmirror.travel.resources.TravelResource;
 
 import java.io.File;
 
@@ -30,16 +31,17 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
     @Override
     public void initialize(Bootstrap<SmartMirrorConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html"));
+        bootstrap.addBundle(new Java8Bundle());
     }
 
     @Override
     public void run(SmartMirrorConfiguration configuration, Environment environment) {
         JerseyClient client = JerseyClientBuilder.createClient();
+        environment.getObjectMapper().registerModule(new JavaTimeModule());
 
         File credentialsDir = new File(System.getProperty("user.home"), ".credentials/smart-mirror");
         GoogleCalendarService calendarService = new GoogleCalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
-        EventsHandler eventsHandler = new EventsHandler(calendarService);
-        CalendarResource calendarResource = new CalendarResource(eventsHandler);
+        CalendarResource calendarResource = new CalendarResource(calendarService);
         environment.jersey().register(calendarResource);
 
         TflConfiguration tflConfiguration = configuration.getTflConfiguration();
