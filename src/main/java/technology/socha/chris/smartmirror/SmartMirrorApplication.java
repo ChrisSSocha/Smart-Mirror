@@ -2,18 +2,18 @@ package technology.socha.chris.smartmirror;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.java8.Java8Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.glassfish.jersey.client.JerseyClient;
-import org.glassfish.jersey.client.JerseyClientBuilder;
-import org.glassfish.jersey.client.JerseyWebTarget;
 import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.GoogleCalendarService;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
 import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
 import technology.socha.chris.smartmirror.travel.resources.TravelResource;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
 import java.io.File;
 import java.time.Clock;
 
@@ -36,7 +36,8 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
 
     @Override
     public void run(SmartMirrorConfiguration configuration, Environment environment) {
-        JerseyClient client = JerseyClientBuilder.createClient();
+
+        Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
 
         File credentialsDir = new File(System.getProperty("user.home"), ".credentials/smart-mirror");
         GoogleCalendarService calendarService = new GoogleCalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
@@ -44,7 +45,7 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
         environment.jersey().register(calendarResource);
 
         TflConfiguration tflConfiguration = configuration.getTflConfiguration();
-        JerseyWebTarget target = client.target(tflConfiguration.getEndpoint());
+        WebTarget target = client.target(tflConfiguration.getEndpoint());
         String appId = tflConfiguration.getAppId();
         String appKey = tflConfiguration.getAppKey();
         TravelResource travelResource = new TravelResource(new TflGateway(target, appId, appKey));
