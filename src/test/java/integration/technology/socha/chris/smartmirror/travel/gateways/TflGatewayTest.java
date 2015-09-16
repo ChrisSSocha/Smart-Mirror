@@ -68,7 +68,7 @@ public class TflGatewayTest {
         List<TubeLine> tubeStatus = tflGateway.getStatus("tube");
 
         TubeStatus goodStatus = new TubeStatus(10, "Good Service", null);
-        TubeLine bakerlooLine = new TubeLine("Bakerloo", newArrayList(goodStatus));
+        TubeLine bakerlooLine = new TubeLine("bakerloo", "Bakerloo", newArrayList(goodStatus));
         assertThat(tubeStatus).contains(bakerlooLine);
     }
 

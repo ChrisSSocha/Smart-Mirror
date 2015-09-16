@@ -10,12 +10,15 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TubeLine {
 
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("lineStatuses")
     private List<TubeStatus> lineStatuses;
 
-    public TubeLine(String name, List<TubeStatus> lineStatuses) {
+    public TubeLine(String id, String name, List<TubeStatus> lineStatuses) {
+        this.id = id;
         this.name = name;
         this.lineStatuses = lineStatuses;
     }
@@ -23,6 +26,10 @@ public class TubeLine {
     @SuppressWarnings("unused")
     private TubeLine(){
         /* For jackson */
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

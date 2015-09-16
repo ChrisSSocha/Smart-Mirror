@@ -22,7 +22,7 @@ public class TravelResource {
     @GET
     @Path("/tube")
     public List<TubeLine> getEvents() {
-        return statusService.getStatus("tube");
+        return statusService.getStatus("tube,dlr");
     }
 
 }

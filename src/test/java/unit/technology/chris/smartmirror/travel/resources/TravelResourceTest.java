@@ -27,8 +27,8 @@ public class TravelResourceTest {
     @Test
     public void shouldReturnListOfTubeStatues(){
 
-        List<TubeLine> expected = newArrayList(new TubeLine("line1", null), new TubeLine("line2", null));
-        when(tflGateway.getStatus("tube")).thenReturn(expected);
+        List<TubeLine> expected = newArrayList(new TubeLine("line1", "Line 1", null), new TubeLine("line2", "Line 2", null));
+        when(tflGateway.getStatus("tube,dlr")).thenReturn(expected);
 
         List<TubeLine> actual = resources.client().target("/travel/tube").request().get(new GenericType<List<TubeLine>>() {});
 

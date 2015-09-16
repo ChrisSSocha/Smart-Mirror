@@ -18,8 +18,8 @@
     background-color: $district-color;
   }
 
-  .hammersmith {
-    background-color: $hammersmith-and-city-color;
+  .hammersmith-city {
+    background-color: $hammersmith-city-color;
   }
 
   .jubilee {
@@ -34,16 +34,20 @@
     background-color: $northern-color;
   }
 
-  .picadilly {
-    background-color: $picadilly-color;
+  .piccadilly {
+    background-color: $piccadilly-color;
   }
 
   .victoria {
     background-color: $victoria-color;
   }
 
-  .waterloo {
-    background-color: $waterloo-and-city-color;
+  .waterloo-city {
+    background-color: $waterloo-city-color;
+  }
+
+  .dlr {
+    background-color: $dlr-color;
   }
 
 }
