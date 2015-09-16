@@ -11,6 +11,21 @@ define([
     'jquery'
 ], function ($) {
 
-    console.log($('body'));
+    function getEvents(){
+        $.get('/application/calendar/events', function(data) {
+            console.log(data);
+            //setTimeout(getEvents,5000);
+        });
+    }
+
+    function getTube(){
+        $.get('/application/travel/tube', function(data) {
+            console.log(data);
+            //setTimeout(getTube,5000);
+        });
+    }
+
+    getEvents();
+    getTube();
 
 });

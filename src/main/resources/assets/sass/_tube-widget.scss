@@ -1,0 +1,50 @@
+@import 'tube-colours';
+
+.tube {
+
+  .bakerloo {
+    background-color: $bakerloo-color;
+  }
+
+  .central {
+    background-color: $central-color;
+  }
+
+  .circle {
+    background-color: $circle-color;
+  }
+
+  .district {
+    background-color: $district-color;
+  }
+
+  .hammersmith {
+    background-color: $hammersmith-and-city-color;
+  }
+
+  .jubilee {
+    background-color: $jubilee-color;
+  }
+
+  .metropolitan {
+    background-color: $metropolitan-color;
+  }
+
+  .northern {
+    background-color: $northern-color;
+  }
+
+  .picadilly {
+    background-color: $picadilly-color;
+  }
+
+  .victoria {
+    background-color: $victoria-color;
+  }
+
+  .waterloo {
+    background-color: $waterloo-and-city-color;
+  }
+
+}
+

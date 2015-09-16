@@ -1,6 +1,7 @@
 //@import 'responsive-grid-system/html5reset';
 @import 'responsive-grid-system/col';
 @import 'responsive-grid-system/3cols';
+@import 'tube-widget';
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -13,7 +14,29 @@ body {
 }
 
 .tube span {
-  min-width: 160px;
+  min-width: 180px;
   display: inline-block;
   padding: 3px;
+
+  background-image: url(/img/warning-white.svg);
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+}
+
+@-webkit-keyframes pulse {
+  0% { -webkit-transform: scale(1); }
+  50% { -webkit-transform: scale(1.1); }
+  100% { -webkit-transform: scale(1); }
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation-name: pulse;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }
