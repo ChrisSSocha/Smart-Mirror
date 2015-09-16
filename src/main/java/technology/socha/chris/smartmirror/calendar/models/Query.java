@@ -1,46 +1,52 @@
 package technology.socha.chris.smartmirror.calendar.models;
 
-import io.dropwizard.java8.jersey.params.LocalDateTimeParam;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.ws.rs.QueryParam;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Query {
 
-    @QueryParam("max")
     private Integer max;
-    @QueryParam("start")
-    private LocalDateTimeParam start;
-    @QueryParam("end")
-    private LocalDateTimeParam end;
-    @QueryParam("orderBy")
+    private LocalDateTime start;
+    private LocalDateTime end;
     private String orderBy;
 
     @SuppressWarnings("unused")
-    public Query(){
+    private Query(){
         /* For Jackson */
     }
 
+    public Query(Integer max, LocalDateTime start, LocalDateTime end, String orderBy) {
+        this.max = max;
+        this.start = start;
+        this.end = end;
+        this.orderBy = orderBy;
+    }
 
-
-    public int getMax() {
-        int defaultValue = 10;
-        return max != null ? max : defaultValue;
+    public Integer getMax() {
+        return max;
     }
 
     public LocalDateTime getStart() {
-        LocalDateTime defaultValue = LocalDate.now().atStartOfDay();
-        return start != null ? start.get() : defaultValue;
+        return start;
     }
 
     public LocalDateTime getEnd() {
-        LocalDateTime defaultValue = LocalDate.now().atStartOfDay().plusDays(2);
-        return end != null ? end.get() : defaultValue;
+        return end;
     }
 
     public String getOrderBy() {
-        String defaultValue = "startTime";
-        return orderBy != null ? orderBy : defaultValue;
+        return orderBy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(o, this);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

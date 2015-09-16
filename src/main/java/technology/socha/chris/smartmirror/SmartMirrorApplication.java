@@ -1,6 +1,5 @@
 package technology.socha.chris.smartmirror;
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.java8.Java8Bundle;
@@ -16,6 +15,7 @@ import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
 import technology.socha.chris.smartmirror.travel.resources.TravelResource;
 
 import java.io.File;
+import java.time.Clock;
 
 public class SmartMirrorApplication extends Application<SmartMirrorConfiguration> {
 
@@ -37,11 +37,10 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
     @Override
     public void run(SmartMirrorConfiguration configuration, Environment environment) {
         JerseyClient client = JerseyClientBuilder.createClient();
-        environment.getObjectMapper().registerModule(new JavaTimeModule());
 
         File credentialsDir = new File(System.getProperty("user.home"), ".credentials/smart-mirror");
         GoogleCalendarService calendarService = new GoogleCalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
-        CalendarResource calendarResource = new CalendarResource(calendarService);
+        CalendarResource calendarResource = new CalendarResource(calendarService, Clock.systemUTC());
         environment.jersey().register(calendarResource);
 
         TflConfiguration tflConfiguration = configuration.getTflConfiguration();
