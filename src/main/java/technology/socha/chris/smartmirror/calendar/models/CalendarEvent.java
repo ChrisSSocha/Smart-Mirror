@@ -1,14 +1,18 @@
 package technology.socha.chris.smartmirror.calendar.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class CalendarEvent {
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class CalendarEvent implements Comparable<CalendarEvent> {
 
     private String summary;
-    private String date;
+    private LocalDateTime date;
 
-    public CalendarEvent(String summary, String startingTime){
+    public CalendarEvent(String summary, LocalDateTime startingTime){
         this.summary = summary;
         this.date = startingTime;
     }
@@ -18,12 +22,18 @@ public class CalendarEvent {
         /* For Jackson */
     }
 
+    @JsonProperty("summary")
     public String getSummary() {
         return summary;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
+    }
+
+    @JsonProperty("date")
+    public String getFormattedDate(){
+        return date.format(DateTimeFormatter.ISO_DATE_TIME);
     }
 
     @Override
@@ -34,5 +44,10 @@ public class CalendarEvent {
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public int compareTo(CalendarEvent o) {
+        return date.compareTo(o.getDate());
     }
 }
