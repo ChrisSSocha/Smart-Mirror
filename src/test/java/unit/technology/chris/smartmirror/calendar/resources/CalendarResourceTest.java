@@ -1,5 +1,6 @@
 package unit.technology.chris.smartmirror.calendar.resources;
 
+import com.google.common.collect.Lists;
 import io.dropwizard.java8.jersey.OptionalMessageBodyWriter;
 import io.dropwizard.java8.jersey.OptionalParamFeature;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -30,6 +31,7 @@ public class CalendarResourceTest {
     public static final String DEFAULT_START = "2007-12-03T00:00";
     public static final String DEFAULT_END = "2007-12-04T00:00";
     public static final String DEFAULT_ORDER = "startTime";
+    public static final List<String> CALENDAR_IDS = Lists.newArrayList("primary");
 
     private CalendarService calendarService = mock(CalendarService.class);
     private GoogleCalendar calendar = mock(GoogleCalendar.class);
@@ -37,7 +39,7 @@ public class CalendarResourceTest {
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new CalendarResource(calendarService, clock))
+            .addResource(new CalendarResource(calendarService, CALENDAR_IDS, clock))
             .addProvider(OptionalMessageBodyWriter.class)
             .addProvider(OptionalParamFeature.class)
             .build();
@@ -61,7 +63,7 @@ public class CalendarResourceTest {
                 LocalDateTime.parse(DEFAULT_END),
                 DEFAULT_ORDER);
 
-        verify(calendar).getEvents(query);
+        verify(calendar).getEvents(CALENDAR_IDS, query);
     }
 
     @Test
@@ -79,7 +81,7 @@ public class CalendarResourceTest {
                 LocalDateTime.parse(DEFAULT_END),
                 DEFAULT_ORDER);
 
-        verify(calendar).getEvents(query);
+        verify(calendar).getEvents(CALENDAR_IDS, query);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class CalendarResourceTest {
                 LocalDateTime.parse(DEFAULT_END),
                 DEFAULT_ORDER);
 
-        verify(calendar).getEvents(query);
+        verify(calendar).getEvents(CALENDAR_IDS, query);
     }
 
     @Test
@@ -120,7 +122,7 @@ public class CalendarResourceTest {
                 DEFAULT_ORDER);
 
 
-        verify(calendar).getEvents(query);
+        verify(calendar).getEvents(CALENDAR_IDS, query);
     }
 
     @Test
@@ -138,7 +140,7 @@ public class CalendarResourceTest {
                 LocalDateTime.parse(DEFAULT_END),
                 "someThing");
 
-        verify(calendar).getEvents(query);
+        verify(calendar).getEvents(CALENDAR_IDS, query);
     }
 
 }

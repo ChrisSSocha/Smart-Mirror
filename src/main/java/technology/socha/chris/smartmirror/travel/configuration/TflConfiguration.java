@@ -11,12 +11,6 @@ public class TflConfiguration {
     @JsonProperty("app_key")
     private String appKey;
 
-    public TflConfiguration(String endpoint, String appId, String appKey) {
-        this.endpoint = endpoint;
-        this.appId = appId;
-        this.appKey = appKey;
-    }
-
     @SuppressWarnings("unused")
     private TflConfiguration(){
         /* For Jackson */

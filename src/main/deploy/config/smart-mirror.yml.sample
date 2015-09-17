@@ -12,6 +12,11 @@ tflConfiguration:
   app_id: <APP ID HERE>
   app_key: <APP KEY HERE>
 
+calendarConfiguration:
+  calendarIds:
+    - primary
+    - secondary
+
 googleClientSecrets:
   client_id: <CLIENT ID HERE>
   auth_uri: "https://accounts.google.com/o/oauth2/auth"

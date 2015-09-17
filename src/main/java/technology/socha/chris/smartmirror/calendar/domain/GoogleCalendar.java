@@ -20,9 +20,9 @@ public class GoogleCalendar implements Calendar {
         this.calendar = calendar;
     }
 
-    public List<CalendarEvent> getEvents(Query query) {
+    public List<CalendarEvent> getEvents(List<String> calendarIds, Query query) {
         try {
-            Events events = calendar.events().list("primary")
+            Events events = calendar.events().list(calendarIds.get(0))
                     .setMaxResults(query.getMax())
                     .setTimeMin(toDateTime(query.getStart()))
                     .setTimeMax(toDateTime(query.getEnd()))

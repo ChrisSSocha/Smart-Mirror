@@ -12,45 +12,46 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Path("/calendar")
 @Produces(MediaType.APPLICATION_JSON)
 public class CalendarResource {
 
     private final CalendarService calendarService;
+    private final List<String> calendarIds;
     private final Clock clock;
 
-    public CalendarResource(CalendarService calendarService, Clock clock) {
+    public CalendarResource(CalendarService calendarService, List<String> calendarIds, Clock clock) {
         this.calendarService = calendarService;
+        this.calendarIds = calendarIds;
         this.clock = clock;
     }
 
     @GET
     @Path("/events")
     public List<CalendarEvent> getEvents(
-            @QueryParam("max") Optional<Integer> maxParam,
-            @QueryParam("start") Optional<LocalDateTimeParam> startParam,
-            @QueryParam("end") Optional<LocalDateTimeParam> endParam,
-            @QueryParam("orderBy") Optional<String> orderByParam) {
+            @QueryParam("max") @DefaultValue("10") Integer maxParam,
+            @QueryParam("orderBy") @DefaultValue("startTime") String orderByParam,
+            @QueryParam("start") LocalDateTimeParam startParam,
+            @QueryParam("end") LocalDateTimeParam endParam) {
         try {
-            Query query = getCalendarQuery(maxParam, startParam, endParam, orderByParam);
-            return calendarService.getCalendar().getEvents(query);
+
+            LocalDate now = LocalDate.now(clock);
+            LocalDateTime startOfDay = now.atStartOfDay();
+            LocalDateTime tomorrow = startOfDay.plusDays(1);
+
+            LocalDateTime start = getLocalDateTimeOrDefault(startParam, startOfDay);
+            LocalDateTime end = getLocalDateTimeOrDefault(endParam, tomorrow);
+
+            Query query = new Query(maxParam, start, end, orderByParam);
+            return calendarService.getCalendar().getEvents(calendarIds, query);
         } catch (IOException e) {
             throw new InternalServerErrorException(e);
         }
     }
 
-    private Query getCalendarQuery(
-            Optional<Integer> maxParam,
-            Optional<LocalDateTimeParam> startParam,
-            Optional<LocalDateTimeParam> endParam,
-            Optional<String> orderByParam) {
-        Integer max = maxParam.orElse(10);
-        LocalDateTime start = startParam.isPresent() ? startParam.get().get() : LocalDate.now(clock).atStartOfDay();
-        LocalDateTime end = endParam.isPresent() ? endParam.get().get() : LocalDate.now(clock).atStartOfDay().plusDays(1);
-        String orderBy = orderByParam.orElse("startTime");
-        return new Query(max, start, end, orderBy);
+    private LocalDateTime getLocalDateTimeOrDefault(LocalDateTimeParam dateTimeParam, LocalDateTime defaultValue) {
+        return dateTimeParam != null ? dateTimeParam.get() : defaultValue;
     }
 
 }

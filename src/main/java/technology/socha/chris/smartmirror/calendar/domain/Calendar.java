@@ -6,5 +6,5 @@ import technology.socha.chris.smartmirror.calendar.models.Query;
 import java.util.List;
 
 public interface Calendar {
-    List<CalendarEvent> getEvents(Query query);
+    List<CalendarEvent> getEvents(List<String> calendarIds, Query query);
 }

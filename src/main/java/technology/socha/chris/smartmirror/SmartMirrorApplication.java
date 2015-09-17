@@ -16,6 +16,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import java.io.File;
 import java.time.Clock;
+import java.util.List;
 
 public class SmartMirrorApplication extends Application<SmartMirrorConfiguration> {
 
@@ -41,7 +42,8 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
 
         File credentialsDir = new File(System.getProperty("user.home"), ".credentials/smart-mirror");
         GoogleCalendarService calendarService = new GoogleCalendarService("Smart Mirror", credentialsDir, configuration.getGoogleClientSecrets());
-        CalendarResource calendarResource = new CalendarResource(calendarService, Clock.systemUTC());
+        List<String> calendarIds = configuration.getCalendarConfiguration().getCalendarIds();
+        CalendarResource calendarResource = new CalendarResource(calendarService, calendarIds, Clock.systemUTC());
         environment.jersey().register(calendarResource);
 
         TflConfiguration tflConfiguration = configuration.getTflConfiguration();
