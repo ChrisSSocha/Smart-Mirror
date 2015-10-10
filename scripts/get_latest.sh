@@ -35,7 +35,7 @@ DOWNLOAD_URL=`echo $LATEST | ruby -r json -e 'puts JSON.parse(STDIN.read)["stage
 
 function update {
   echo "Downloading $DOWNLOAD_URL"
-  curl --silent -u $USERNAME:$API_KEY -X GET -H 'Accept: application/vnd.snap-ci.com.v1+json' $DOWNLOAD_URL --location -o magic_mirror.jar
+  curl --silent -u $USERNAME:$API_KEY -X GET -H 'Accept: application/vnd.snap-ci.com.v1+json' $DOWNLOAD_URL --location -o smart-mirror.jar
   echo $COUNTER > latest_version
 }
 
