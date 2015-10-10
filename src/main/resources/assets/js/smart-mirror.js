@@ -27,26 +27,27 @@ define([
     }
 
     function parsingCalendarEvents(event){
-        var time = moment(event.date).format('h:mm:ss a');
+        var time = moment(event.date).format('h:mm a');
         var $event = $('<li class="event"></li>').text(time + ' - ' + event.summary);
         $('.calendar ul').append($event)
     }
 
     function getEvents(){
         $.get('/application/calendar/events').done(function(data) {
+            $('.calendar ul').empty();
             data.map(parsingCalendarEvents);
-            //setTimeout(getEvents,5000);
+            setTimeout(getEvents,60000);
         }).error(function(){
-            //setTimeout(getEvents,5000);
+            setTimeout(getEvents,60000);
         });
     }
 
     function getTube(){
         $.get('/application/travel/tube').done(function(data) {
             data.map(parseTubeLine);
-            //setTimeout(getTube,5000);
+            setTimeout(getTube,60000);
         }).error(function(){
-            //setTimeout(getTube,5000);
+            setTimeout(getTube,60000);
         });
     }
 

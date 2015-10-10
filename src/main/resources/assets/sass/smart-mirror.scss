@@ -26,6 +26,10 @@ body {
   background-size: 24px;
 }
 
+#time {
+  text-align: center;
+}
+
 @-webkit-keyframes pulse {
   0% { -webkit-transform: scale(1); }
   50% { -webkit-transform: scale(1.1); }
