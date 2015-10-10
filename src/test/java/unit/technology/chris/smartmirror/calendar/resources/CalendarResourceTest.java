@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 public class CalendarResourceTest {
@@ -142,7 +141,6 @@ public class CalendarResourceTest {
                 "someThing");
 
         verify(calendar).getEvents(CALENDAR_IDS, query);
-        assertThat(true).isFalse();
     }
 
 }
