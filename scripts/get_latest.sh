@@ -23,6 +23,14 @@ fi
 
 LATEST=`curl --silent -u $USERNAME:$API_KEY -X GET -H 'Accept: application/vnd.snap-ci.com.v1+json' https://api.snap-ci.com/project/ChrisSSocha/Smart-Mirror/branch/master/pipelines/latest --location`
 COUNTER=`echo $LATEST | ruby -r json -e 'puts JSON.parse(STDIN.read)["counter"]'`
+RESULT=`echo $LATEST | ruby -r json -e 'puts JSON.parse(STDIN.read)["result"]'`
+
+if [ $RESULT = 'failed' ]
+then
+  echo "Latest build ($COUNTER) failed. Aborting"
+  exit 0
+fi
+
 DOWNLOAD_URL=`echo $LATEST | ruby -r json -e 'puts JSON.parse(STDIN.read)["stages"][0]["workers"][0]["artifacts"][0]["download_url"]'`
 
 function update {
