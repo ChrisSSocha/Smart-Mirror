@@ -34,14 +34,18 @@ fi
 DOWNLOAD_URL=`echo $LATEST | ruby -r json -e 'puts JSON.parse(STDIN.read)["stages"][0]["workers"][0]["artifacts"][0]["download_url"]'`
 
 function update {
+  echo "Stopping Smart Mirror"
+  /usr/sbin/service smart-mirror stop
   echo "Downloading $DOWNLOAD_URL"
-  curl --silent -u $USERNAME:$API_KEY -X GET -H 'Accept: application/vnd.snap-ci.com.v1+json' $DOWNLOAD_URL --location -o smart-mirror.jar
-  echo $COUNTER > latest_version
+  curl --silent -u $USERNAME:$API_KEY -X GET -H 'Accept: application/vnd.snap-ci.com.v1+json' $DOWNLOAD_URL --location -o /opt/smart-mirror/smart-mirror.jar
+  echo $COUNTER > /opt/smart-mirror/latest_version
+  echo "Starting Smart Mirror"
+  /usr/sbin/service smart-mirror start
 }
 
 if [ -e latest_version ]
 then
-  CURRENT=`cat latest_version`
+  CURRENT=`cat /opt/smart-mirror/latest_version`
   if [ $COUNTER -gt $CURRENT ]
   then
   	echo "Version out of date. Current = $CURRENT. Latest = $COUNTER"

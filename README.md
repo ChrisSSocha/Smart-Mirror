@@ -23,16 +23,20 @@ The application should now be on [http://localhost:9098](http://localhost:9098)
 
 __ WORK IN PROGRESS __
 
-*   Copy ``./scripts/init.d/smart-mirror` to `/etc/init.d/smart-mirror` (and git it the correct permissions -> 0755)
-*   Copy `smart-mirror.jar` to `/opt/smart-mirror/`
-*   Copy `smart-mirror.yml` to `/etc/`
-*   Execute `sudo service smart-mirror start` and the app will spin up
-  *   Errors? The logs can be found at `/var/log/smart-mirror.log` and `/var/log/smart-mirror.err`
+*   `./src/main/deploy` gives you a rough idea of where files should go for a deployment to a RaspberryPi:
+  *   Init script must be copied to `/etc/init.d/smart-mirror` (and give it the correct permissions -> 0755)
+  *   YAML configuration should be copied to `/etc/smart-mirror.yml`
+  *   Application should be copied to `/opt/smart-mirror/smart-mirror.jar`
+*   Now you can execute `sudo service smart-mirror start` and the app will spin up
 * Do you want it to start up automagically on boot? Execute `sudo update-rc.d smart-mirror defaults`
+*   Logs can be found at `/var/log/smart-mirror.log` and `/var/log/smart-mirror.err`
+*   If you are using the SnapCI build pipeline, you can automatically upgrade the service when a new artifact is created:
+  *   Copy `get_latest.sh` script to ``/opt/smart-mirror/get_latesh.sh`
+  *   Execute `sudo crontab -e`
+  *   Add `*/5 * * * * /opt/smart-mirror/get_latest.sh {username} {api_key} >> /var/log/smart-mirror.cron.yml 2>&1`
 
 ### Still to do
 
 *   cron job to turn screen on/off in morning
-*   cron job to poll SnapCI for updated artifacts (and restart app)
 *   JS to refresh page if version out of date
 *   Start browser fullscreen on boot
