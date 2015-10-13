@@ -43,7 +43,7 @@ function update {
   /usr/sbin/service smart-mirror start
 }
 
-if [ -e latest_version ]
+if [ -e /opt/smart-mirror/latest_version ]
 then
   CURRENT=`cat /opt/smart-mirror/latest_version`
   if [ $COUNTER -gt $CURRENT ]
