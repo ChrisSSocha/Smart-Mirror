@@ -6,6 +6,7 @@ import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.java8.Java8Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import technology.socha.chris.smartmirror.admin.resources.VersionResource;
 import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.GoogleCalendarService;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
@@ -52,6 +53,8 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
         String appKey = tflConfiguration.getAppKey();
         TravelResource travelResource = new TravelResource(new TflGateway(target, appId, appKey));
         environment.jersey().register(travelResource);
+
+        environment.jersey().register(new VersionResource());
     }
 
 }
