@@ -34,9 +34,13 @@ __ WORK IN PROGRESS __
   *   Copy `get_latest.sh` script to ``/opt/smart-mirror/get_latesh.sh`
   *   Execute `sudo crontab -e`
   *   Add `*/5 * * * * /opt/smart-mirror/get_latest.sh {username} {api_key} >> /var/log/smart-mirror.cron.yml 2>&1`
+*   Do you want the screen to turn on/off at specific times in the day?
+  *   Copy the `turn_on_screen.sh` and `turn_off_screen.sh` to `/opt/smart-mirror/`
+  *   Execute `sudo crontab -e`
+  *   Add `0 7 * * * /opt/smart-mirror/turn_on_screen.sh >> /var/log/screen.cron.yml 2>&1` to turn on at 7am
+  *   Add `30 8 * * * /opt/smart-mirror/turn_off_screen.sh >> /var/log/screen.cron.yml 2>&1` to turn off at 8.30am
 
 ### Still to do
 
-*   cron job to turn screen on/off in morning
 *   JS to refresh page if version out of date
 *   Start browser fullscreen on boot
