@@ -4,7 +4,7 @@ require.config({
     baseUrl: 'js/',
     paths: {
         jquery: 'vendor/jquery/dist/jquery',
-        moment: 'vendor/moment/moment',
+        moment: 'vendor/moment/moment'
     }
 });
 
@@ -38,8 +38,11 @@ define([
         $.get('/application/calendar/events').done(function (data) {
             $('.calendar ul').empty();
             data.map(parsingCalendarEvents);
+
+            $('.error').removeClass('eventsError');
             setTimeout(getEvents, 60000);
         }).error(function () {
+            $('.error').addClass('eventsError');
             setTimeout(getEvents, 60000);
         });
     }
@@ -48,7 +51,10 @@ define([
         $.get('/application/travel/tube').done(function (data) {
             data.map(parseTubeLine);
             setTimeout(getTube, 60000);
+
+            $('.error').removeClass('tubeError');
         }).error(function () {
+            $('.error').addClass('tubeError');
             setTimeout(getTube, 60000);
         });
     }
@@ -71,8 +77,12 @@ define([
             } else if (version != data) {
                 location.reload();
             }
+
+            $('.error').removeClass('versionError');
             setTimeout(ensureLatestVersion, 300000);
         }).error(function () {
+
+            $('.error').addClass('versionError');
             setTimeout(ensureLatestVersion, 300000);
         });
     }

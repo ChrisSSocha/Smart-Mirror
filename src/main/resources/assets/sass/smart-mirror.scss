@@ -26,23 +26,19 @@ body {
   background-size: 24px;
 }
 
+.error {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: none;
+}
+
+.versionError, .tubeError, .eventsError {
+  display: block !important;
+}
+
 #time {
   text-align: center;
-}
-
-@-webkit-keyframes pulse {
-  0% { -webkit-transform: scale(1); }
-  50% { -webkit-transform: scale(1.1); }
-  100% { -webkit-transform: scale(1); }
-}
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-.pulse {
-  animation-name: pulse;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
 }

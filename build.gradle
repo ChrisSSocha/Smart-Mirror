@@ -58,7 +58,7 @@ dependencies {
 }
 
 run {
-    args 'server', './src/main/deploy/config/smart-mirror.yml'
+    args 'server', './src/main/deploy/etc/smart-mirror.yml'
 }
 run.dependsOn compassWatchStart
 run.finalizedBy compassWatchStop
