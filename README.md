@@ -56,6 +56,32 @@ You're in luck!
 *   Add `0 7 * * * /opt/smart-mirror/turn_on_screen.sh >> /var/log/screen.cron.log 2>&1` to turn on at 7am
 *   Add `30 8 * * * /opt/smart-mirror/turn_off_screen.sh >> /var/log/screen.cron.log 2>&1` to turn off at 8.30am
 
+Source: [the-martins.org](http://the-martins.org/?p=81)
+
+#### Awesome, my screen turns itself off! But how can i turn it back on manually?
+
+Open `~/.config/openbox/lxde-rc.xml` and add the following to the `<keyboard>` section
+
+    <keybind key=”A-C-S-1″>
+      <action name=”Execute>
+        <command>/opt/smart-mirror/turn_on_screen.sh</command>
+      </action>
+    </keybind>
+    <keybind key=”A-C-S-0″>
+      <action name=”Execute>
+        <command>/opt/smart-mirror/turn_off_screen.sh</command>
+      </action>
+    </keybind>
+
+Unlike crontab which runs as root, this will run as your user, so you'll need to ensure we can execute a few executables as your user
+
+    chmod u+s /opt/vc/bin/tvservice
+    chmod u+s /bin/chvt
+
+Now You can turn your screen off with Alt-Control-Shift-1 and off with Alt-Control-Shift-0
+
+Source: [cagewebdev.com](http://cagewebdev.com/index.php/raspberry-pi-binding-actions-to-hotkeys/)
+
 ### My screensaver blanks the screen :-(
 
 `apt-get install x11-xserver-utils`
