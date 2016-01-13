@@ -6,9 +6,20 @@ import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.java8.Java8Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
 import technology.socha.chris.smartmirror.admin.resources.VersionResource;
 import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.GoogleCalendarService;
+import technology.socha.chris.smartmirror.scheduler.TurnScreenOff;
+import technology.socha.chris.smartmirror.scheduler.TurnScreenOn;
+import technology.socha.chris.smartmirror.scheduler.resources.SchedulerResource;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
 import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
 import technology.socha.chris.smartmirror.travel.resources.TravelResource;
@@ -37,7 +48,7 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
     }
 
     @Override
-    public void run(SmartMirrorConfiguration configuration, Environment environment) {
+    public void run(SmartMirrorConfiguration configuration, Environment environment) throws Exception{
 
         Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
 
@@ -55,6 +66,37 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
         environment.jersey().register(travelResource);
 
         environment.jersey().register(new VersionResource());
+
+        Scheduler scheduler = scheduleJobs();
+
+        environment.jersey().register(new SchedulerResource(scheduler));
+    }
+
+    private Scheduler scheduleJobs() throws SchedulerException {
+        JobDetail turnScreenOnJob = JobBuilder.newJob(TurnScreenOn.class)
+                .withIdentity(TurnScreenOn.JOB_NAME)
+                .build();
+
+        CronTrigger turnScreenOnTrigger = TriggerBuilder.newTrigger()
+                .withIdentity(TurnScreenOn.TRIGGER_KEY)
+                .withSchedule(CronScheduleBuilder.cronSchedule("* * * * * ?"))
+                .build();
+
+        JobDetail turnScreenOffJob = JobBuilder.newJob(TurnScreenOff.class)
+                .withIdentity(TurnScreenOff.JOB_NAME)
+                .build();
+
+        CronTrigger turnScreenOffTrigger = TriggerBuilder.newTrigger()
+                .withIdentity(TurnScreenOff.TRIGGER_KEY)
+                .withSchedule(CronScheduleBuilder.cronSchedule("* * * * * ?"))
+                .build();
+
+        Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.start();
+
+        scheduler.scheduleJob(turnScreenOnJob, turnScreenOnTrigger);
+        scheduler.scheduleJob(turnScreenOffJob, turnScreenOffTrigger);
+        return scheduler;
     }
 
 }
