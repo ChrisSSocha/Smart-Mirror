@@ -23,7 +23,7 @@ public class TurnScreenOn implements Job {
         try {
             powerOnPreferred.start().waitFor();
             changeVirtualTerminal(1).start().waitFor();
-            changeVirtualTerminal(2).start().waitFor();
+            changeVirtualTerminal(7).start().waitFor();
         } catch (IOException e) {
             throw new JobExecutionException(e);
         } catch (InterruptedException e) {

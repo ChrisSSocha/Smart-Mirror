@@ -98,6 +98,10 @@ Log out, log in, verify it's working with
 
 Source: [Stack Exchange](http://raspberrypi.stackexchange.com/questions/2059/disable-screen-blanking-in-x-windows-on-raspbian#5145)
 
+## The screen resolution looks off!
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=24679
+
 ## Still to do
 
 *   Start browser fullscreen on boot
