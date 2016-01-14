@@ -19,6 +19,7 @@ import technology.socha.chris.smartmirror.calendar.resources.CalendarResource;
 import technology.socha.chris.smartmirror.calendar.services.GoogleCalendarService;
 import technology.socha.chris.smartmirror.scheduler.TurnScreenOff;
 import technology.socha.chris.smartmirror.scheduler.TurnScreenOn;
+import technology.socha.chris.smartmirror.scheduler.configuration.ScheduleConfiguration;
 import technology.socha.chris.smartmirror.scheduler.resources.SchedulerResource;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
 import technology.socha.chris.smartmirror.travel.gateways.TflGateway;
@@ -48,7 +49,7 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
     }
 
     @Override
-    public void run(SmartMirrorConfiguration configuration, Environment environment) throws Exception{
+    public void run(SmartMirrorConfiguration configuration, Environment environment) throws Exception {
 
         Client client = new JerseyClientBuilder(environment).using(configuration.getJerseyClientConfiguration()).build(getName());
 
@@ -67,19 +68,19 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
 
         environment.jersey().register(new VersionResource());
 
-        Scheduler scheduler = scheduleJobs();
+        Scheduler scheduler = scheduleJobs(configuration.getScheduleConfiguration());
 
         environment.jersey().register(new SchedulerResource(scheduler));
     }
 
-    private Scheduler scheduleJobs() throws SchedulerException {
+    private Scheduler scheduleJobs(ScheduleConfiguration configuration) throws SchedulerException {
         JobDetail turnScreenOnJob = JobBuilder.newJob(TurnScreenOn.class)
                 .withIdentity(TurnScreenOn.JOB_NAME)
                 .build();
 
         CronTrigger turnScreenOnTrigger = TriggerBuilder.newTrigger()
                 .withIdentity(TurnScreenOn.TRIGGER_KEY)
-                .withSchedule(CronScheduleBuilder.cronSchedule("* * * * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule(configuration.getTurnOnSchedule()))
                 .build();
 
         JobDetail turnScreenOffJob = JobBuilder.newJob(TurnScreenOff.class)
@@ -88,7 +89,7 @@ public class SmartMirrorApplication extends Application<SmartMirrorConfiguration
 
         CronTrigger turnScreenOffTrigger = TriggerBuilder.newTrigger()
                 .withIdentity(TurnScreenOff.TRIGGER_KEY)
-                .withSchedule(CronScheduleBuilder.cronSchedule("* * * * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule(configuration.getTurnOffSchedule()))
                 .build();
 
         Scheduler scheduler = new StdSchedulerFactory().getScheduler();

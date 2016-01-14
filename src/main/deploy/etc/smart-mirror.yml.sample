@@ -26,3 +26,8 @@ googleClientSecrets:
   redirect_uris:
     - "urn:ietf:wg:oauth:2.0:oob"
     - "http://localhost"
+
+# See http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger
+scheduleConfiguration:
+  turnOnSchedule:  0 0 7 * * ?
+  turnOffSchedule: 0 30 8 * * ?

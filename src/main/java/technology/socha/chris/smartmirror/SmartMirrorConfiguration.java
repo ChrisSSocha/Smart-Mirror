@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientConfiguration;
 import technology.socha.chris.smartmirror.calendar.configuration.CalendarConfiguration;
+import technology.socha.chris.smartmirror.scheduler.configuration.ScheduleConfiguration;
 import technology.socha.chris.smartmirror.travel.configuration.TflConfiguration;
 
 public class SmartMirrorConfiguration extends Configuration {
@@ -21,6 +22,9 @@ public class SmartMirrorConfiguration extends Configuration {
     @JsonProperty("googleClientSecrets")
     private GoogleClientSecrets.Details googleClientSecrets;
 
+    @JsonProperty("scheduleConfiguration")
+    private ScheduleConfiguration scheduleConfiguration;
+
     public JerseyClientConfiguration getJerseyClientConfiguration() {
         return jerseyClient;
     }
@@ -31,6 +35,10 @@ public class SmartMirrorConfiguration extends Configuration {
 
     public CalendarConfiguration getCalendarConfiguration() {
         return calendarConfiguration;
+    }
+
+    public ScheduleConfiguration getScheduleConfiguration() {
+        return scheduleConfiguration;
     }
 
     public GoogleClientSecrets getGoogleClientSecrets() {

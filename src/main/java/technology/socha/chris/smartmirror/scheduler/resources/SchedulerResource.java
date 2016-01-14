@@ -23,41 +23,35 @@ public class SchedulerResource {
 
     @POST
     @Path("/on")
-    public void turnScreenOn(){
-        System.out.println("Turning screen on");
+    public void turnScreenOn() throws SchedulerException {
+        scheduler.triggerJob(TurnScreenOn.JOB_NAME);
     }
 
     @POST
     @Path("/off")
-    public void turnScreenOff(){
-        System.out.println("Turning screen off");
+    public void turnScreenOff() throws SchedulerException {
+        scheduler.triggerJob(TurnScreenOff.JOB_NAME);
     }
 
     @PATCH
     @Path("/on")
     public void scheduleScreenOn(String cron) throws SchedulerException {
-
         CronTrigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(TurnScreenOn.TRIGGER_KEY)
                 .withSchedule(CronScheduleBuilder.cronSchedule(cron))
                 .build();
 
         scheduler.rescheduleJob(TurnScreenOn.TRIGGER_KEY, trigger);
-
-        System.out.println("Modified turn on screen time to " + cron);
     }
 
     @PATCH
     @Path("/off")
     public void scheduleScreenOff(String cron) throws SchedulerException {
-
         CronTrigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(TurnScreenOff.TRIGGER_KEY)
                 .withSchedule(CronScheduleBuilder.cronSchedule(cron))
                 .build();
 
         scheduler.rescheduleJob(TurnScreenOff.TRIGGER_KEY, trigger);
-
-        System.out.println("Modified turn off screen time to " + cron);
     }
 }
